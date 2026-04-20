@@ -1,0 +1,67 @@
+{
+  "expo": {
+    "name": "DgMobile",
+    "slug": "dgmobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "dgmobile",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.digcard.dgmobile",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Allow DigCard to use your microphone to record voice notes.",
+        "NSSpeechRecognitionUsageDescription": "Allow DigCard to convert your speech into notes."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.digcard.dgmobile",
+      "permissions": ["RECORD_AUDIO", "CAMERA", "SPEECH_RECOGNIZER"]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-camera",
+        { "cameraPermission": "Allow DigCard to access your camera to scan QR codes." }
+      ],
+      [
+        "expo-image-picker",
+        { "photosPermission": "Allow DigCard to access your photos." }
+      ],
+      [
+        "expo-av",
+        { "microphonePermission": "Allow DigCard to access your microphone to record notes." }
+      ],
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Allow DigCard to use your microphone.",
+          "speechRecognitionPermission": "Allow DigCard to use speech recognition.",
+          "androidSpeechServicePackages": [
+            "com.google.android.tts",
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
