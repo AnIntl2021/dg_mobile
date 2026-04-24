@@ -6,13 +6,14 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   Share,
   ActivityIndicator,
   RefreshControl,
   Alert,
   Modal,
+  StatusBar,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
@@ -52,6 +53,7 @@ function formatRelative(dateStr) {
 export default function ContactsScreen() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [contacts, setContacts] = useState([]);
   const [cardName, setCardName] = useState('');
   const [search, setSearch] = useState('');
@@ -119,9 +121,10 @@ export default function ContactsScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={CORAL} />
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: Math.max(insets.top, 8) + 6 }]}>
         <View style={styles.headerLeft}>
           <Text style={styles.headerTitle}>Contacts</Text>
           {cardName ? (
@@ -130,24 +133,26 @@ export default function ContactsScreen() {
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.iconBtn} onPress={handleLogout}>
-            <Ionicons name="log-out-outline" size={22} color="#333" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconBtn}>
-            <Ionicons name="add" size={24} color="#333" />
+            <Ionicons name="log-out-outline" size={22} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Search */}
       <View style={styles.searchWrap}>
-        <Ionicons name="search-outline" size={18} color="#AAAAAA" style={styles.searchIcon} />
+        <Ionicons name="search-outline" size={20} color="#94A3B8" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search"
-          placeholderTextColor="#AAAAAA"
+          placeholder="Search contacts..."
+          placeholderTextColor="#94A3B8"
           value={search}
           onChangeText={setSearch}
         />
+        {search.length > 0 && (
+          <TouchableOpacity onPress={() => setSearch('')} hitSlop={10} style={{ padding: 4 }}>
+            <Ionicons name="close-circle" size={18} color="#CBD5E1" />
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* List */}
@@ -215,36 +220,40 @@ export default function ContactsScreen() {
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#FFFFFF' },
+  container: { flex: 1, backgroundColor: '#FFFFFF' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: 18,
+    paddingBottom: 20,
+    backgroundColor: CORAL,
   },
   headerLeft: { flex: 1 },
-  headerTitle: { fontSize: 18, fontWeight: '700', color: '#1A1A1A' },
-  headerSub: { fontSize: 12, color: '#888', marginTop: 1 },
-  headerRight: { flexDirection: 'row', gap: 4 },
+  headerTitle: { fontSize: 22, fontWeight: '800', color: '#fff' },
+  headerSub: { fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 2, textTransform: 'uppercase', letterSpacing: 0.5 },
+  headerRight: { flexDirection: 'row', alignItems: 'center' },
   iconBtn: { padding: 4 },
   searchWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F2F2F2',
-    borderRadius: 12,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 14,
     marginHorizontal: 16,
+    marginTop: 16,
     marginBottom: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
   },
-  searchIcon: { marginRight: 8 },
-  searchInput: { flex: 1, paddingVertical: 11, fontSize: 15, color: '#1A1A1A' },
-  list: { paddingBottom: 20 },
+  searchIcon: { marginRight: 10 },
+  searchInput: { flex: 1, paddingVertical: 12, fontSize: 16, color: '#1E293B' },
+  list: { paddingBottom: 120 },
   contactRow: {
     flexDirection: 'row',
     alignItems: 'center',

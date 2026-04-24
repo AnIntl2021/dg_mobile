@@ -22,14 +22,14 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Clipboard from 'expo-clipboard';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library';
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
-import { cardsApi, API_BASE_URL, FRONTEND_BASE_URL } from '@/services/api';
+import { cardsApi, tokenStore, API_BASE_URL, FRONTEND_BASE_URL } from '@/services/api';
 
 const BRAND = '#1b4654';
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -475,6 +475,8 @@ function ShareModal({ visible, onClose, cardUrl, displayName, cardId, cardSlug, 
   const [walletLoading, setWalletLoading] = useState(false);
   const [subScreen, setSubScreen] = useState(null);
   const qrSvgRef = useRef(null);
+  const walletLabel = Platform.OS === 'ios' ? 'Add to Apple Wallet' : 'Add card to wallet';
+  const walletLoadingLabel = Platform.OS === 'ios' ? 'Opening Apple Wallet...' : 'Opening wallet...';
 
   const shareMsg = shareText || `Check out my digital business card: ${cardUrl}`;
 
@@ -555,6 +557,51 @@ function ShareModal({ visible, onClose, cardUrl, displayName, cardId, cardSlug, 
     if ((!tenantSlug || !cardSlug) && !cardId) { Alert.alert('Unavailable', 'Card info not found.'); return; }
     setWalletLoading(true);
     try {
+      if (Platform.OS === 'ios') {
+        if (!cardId) {
+          Alert.alert('Unavailable', 'Card info not found.');
+          return;
+        }
+
+        const token = await tokenStore.get('auth_token');
+        if (!token) {
+          Alert.alert('Session Expired', 'Please log in again and try.');
+          return;
+        }
+
+        const passUrl = cardsApi.getAppleWalletPassUrl(cardId);
+        const localUri = `${FileSystem.cacheDirectory}dg-card-${cardId}.pkpass`;
+        const result = await FileSystem.downloadAsync(passUrl, localUri, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (result.status !== 200) {
+          let backendMsg = `Could not download wallet pass (HTTP ${result.status}).`;
+          try {
+            const errorRes = await fetch(passUrl, {
+              method: 'GET',
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const text = await errorRes.text();
+            try {
+              const parsed = JSON.parse(text);
+              backendMsg = parsed?.detail || parsed?.message || backendMsg;
+            } catch {
+              if (text) backendMsg = text;
+            }
+          } catch {}
+
+          Alert.alert('Apple Wallet', backendMsg);
+          return;
+        }
+
+        await Sharing.shareAsync(localUri, {
+          mimeType: 'application/vnd.apple.pkpass',
+          UTI: 'com.apple.pkpass',
+        });
+        return;
+      }
+
       let walletUrl = null;
 
       if (tenantSlug && cardSlug) {
@@ -748,7 +795,7 @@ function ShareModal({ visible, onClose, cardUrl, displayName, cardId, cardSlug, 
                       : <Ionicons name="wallet-outline" size={22} color="#fff" />}
                   </View>
                   <Text style={[sh.rowLabel, { flex: 1 }]}>
-                    {walletLoading ? 'Opening wallet\u2026' : 'Add card to wallet'}
+                    {walletLoading ? walletLoadingLabel : walletLabel}
                   </Text>
                   <Ionicons name="chevron-forward" size={15} color="rgba(255,255,255,0.35)" />
                 </TouchableOpacity>
@@ -871,7 +918,7 @@ export default function MyCardScreen() {
               </View>
             )}
           </TouchableOpacity>
-          <Text style={s.topTitle}>Ansoftt DG</Text>
+          <Text style={s.topTitle}>My Card</Text>
           <TouchableOpacity onPress={handleLogout} style={s.logoutBtn} hitSlop={10}>
             <Ionicons name="log-out-outline" size={22} color="#fff" />
           </TouchableOpacity>
@@ -1011,7 +1058,7 @@ export default function MyCardScreen() {
           </ScrollView>
 
         {/* Share button */}
-        <View style={s.footer}>
+        <View style={[s.footer, { paddingBottom: insets.bottom + 16 }]}> 
           <TouchableOpacity style={s.shareBtn} onPress={() => setShareOpen(true)}>
             <Ionicons name="paper-plane-outline" size={17} color="#fff" style={{ marginRight: 8 }} />
             <Text style={s.shareBtnText}>Share</Text>
@@ -1204,8 +1251,9 @@ const s = StyleSheet.create({
   qrBox: { backgroundColor: '#F8FAFC', borderRadius: 14, padding: 12 },
   qrLabel: { fontSize: 11, color: '#94A3B8', marginTop: 6 },
   footer: {
-    position: 'absolute', bottom: 0, left: 0, right: 0,
-    paddingBottom: 24, paddingTop: 12, paddingHorizontal: 40,
+    paddingBottom: 20,
+    paddingTop: 12,
+    paddingHorizontal: 40,
     backgroundColor: 'rgba(243,244,246,0.95)',
   },
   shareBtn: {

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "DgMobile",
-    "slug": "dgmobile",
+    "name": "ANSOFTT DC",
+    "slug": "ansoftt-dc",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ansoftt_logo.png",
     "userInterfaceStyle": "automatic",
     "scheme": "dgmobile",
     "splash": {
@@ -16,9 +16,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.digcard.dgmobile",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Allow DigCard to use your microphone to record voice notes.",
-        "NSSpeechRecognitionUsageDescription": "Allow DigCard to convert your speech into notes."
-      }
+        "NSMicrophoneUsageDescription": "Allow DigCard to use your microphone.",
+        "NSSpeechRecognitionUsageDescription": "Allow DigCard to use speech recognition."
+      },
+      "appleTeamId": "R979TNK6AQ"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +27,12 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.digcard.dgmobile",
-      "permissions": ["RECORD_AUDIO", "CAMERA", "SPEECH_RECOGNIZER"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.SPEECH_RECOGNIZER",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -38,15 +44,21 @@
       "expo-font",
       [
         "expo-camera",
-        { "cameraPermission": "Allow DigCard to access your camera to scan QR codes." }
+        {
+          "cameraPermission": "Allow DigCard to access your camera to scan QR codes."
+        }
       ],
       [
         "expo-image-picker",
-        { "photosPermission": "Allow DigCard to access your photos." }
+        {
+          "photosPermission": "Allow DigCard to access your photos."
+        }
       ],
       [
         "expo-av",
-        { "microphonePermission": "Allow DigCard to access your microphone to record notes." }
+        {
+          "microphonePermission": "Allow DigCard to access your microphone to record notes."
+        }
       ],
       [
         "expo-speech-recognition",

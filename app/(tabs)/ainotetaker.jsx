@@ -611,27 +611,27 @@ export default function AiNotetakerScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Ionicons name="mic" size={20} color="#fff" style={{ marginRight: 8 }} />
+          <Ionicons name="mic" size={22} color="#fff" style={{ marginRight: 10 }} />
           <Text style={styles.headerTitle}>AI Notetaker</Text>
         </View>
         <TouchableOpacity onPress={handleLogout} hitSlop={10}>
-          <Ionicons name="log-out-outline" size={22} color="#fff" />
+          <Ionicons name="open-outline" size={20} color="#fff" />
         </TouchableOpacity>
       </View>
 
       {/* Search */}
       <View style={styles.searchWrap}>
-        <Ionicons name="search-outline" size={18} color="#999" style={{ marginRight: 8 }} />
+        <Ionicons name="search-outline" size={18} color="#AAAAAA" style={{ marginRight: 10 }} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search notes..."
-          placeholderTextColor="#999"
+          placeholderTextColor="#AAAAAA"
           value={search}
           onChangeText={setSearch}
         />
         {search.length > 0 && (
           <TouchableOpacity onPress={() => setSearch('')} hitSlop={8}>
-            <Ionicons name="close-circle" size={18} color="#BBB" />
+            <Ionicons name="close-circle" size={18} color="#DDD" />
           </TouchableOpacity>
         )}
       </View>
@@ -700,12 +700,9 @@ export default function AiNotetakerScreen() {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.disclaimer}>
-          Make sure everyone is okay with being recorded.
-        </Text>
         <TouchableOpacity style={styles.takeNoteBtn} onPress={() => setRecording(true)} activeOpacity={0.85}>
-          <Ionicons name="mic" size={20} color="#fff" style={{ marginRight: 8 }} />
-          <Text style={styles.takeNoteBtnText}>Take note</Text>
+          <Ionicons name="mic" size={18} color="#fff" style={{ marginRight: 8 }} />
+          <Text style={styles.takeNoteBtnText}>Record Note</Text>
         </TouchableOpacity>
       </View>
 
@@ -727,7 +724,7 @@ export default function AiNotetakerScreen() {
 
 /* ═══════════════════════════ Main Styles ═══════════════════════════ */
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#F5F6F8' },
+  safe: { flex: 1, backgroundColor: '#FFFFFF' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -737,66 +734,90 @@ const styles = StyleSheet.create({
     backgroundColor: BRAND,
   },
   headerLeft: { flexDirection: 'row', alignItems: 'center' },
-  headerTitle: { fontSize: 18, fontWeight: '700', color: '#fff' },
+  headerTitle: { fontSize: 20, fontWeight: '700', color: '#fff' },
   searchWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#F5F5F5',
     borderRadius: 12,
     marginHorizontal: 16,
-    marginTop: 14,
-    marginBottom: 10,
+    marginTop: 16,
+    marginBottom: 16,
     paddingHorizontal: 14,
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
   },
-  searchInput: { flex: 1, paddingVertical: 11, fontSize: 15, color: '#1A1A1A' },
-  list: { paddingBottom: 150 },
+  searchInput: { flex: 1, paddingVertical: 12, fontSize: 15, color: '#1A1A1A' },
+  list: { paddingHorizontal: 16, paddingBottom: 120, paddingTop: 0 },
+  notesBox: {
+    display: 'none',
+  },
+  notesBoxHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  notesBoxTitle: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1A1A1A',
+  },
+  notesCount: {
+    fontSize: 12,
+    color: '#777',
+  },
+  notesBoxText: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+  },
   noteItem: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 14,
-    backgroundColor: '#fff',
-    marginHorizontal: 16,
-    marginTop: 6,
-    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
+    marginBottom: 10,
     shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
     elevation: 1,
   },
   noteHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
+    alignItems: 'flex-start',
+    marginBottom: 8,
   },
-  noteHeaderRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  noteHeaderRight: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   noteDuration: { fontSize: 11, color: '#BBB' },
-  deleteBtn: { padding: 2 },
-  noteTime: { fontSize: 12, color: '#999' },
-  noteTitle: { fontSize: 16, fontWeight: '700', color: '#1A1A1A', marginBottom: 4, lineHeight: 22 },
-  notePreview: { fontSize: 13, color: '#777', lineHeight: 19, marginBottom: 8 },
-  badgeRow: { flexDirection: 'row' },
+  deleteBtn: { padding: 4 },
+  noteTime: { fontSize: 12, color: '#AAAAAA' },
+  noteTitle: { fontSize: 16, fontWeight: '700', color: '#1A1A1A', marginBottom: 6, lineHeight: 22 },
+  notePreview: { fontSize: 13, color: '#666', lineHeight: 19, marginBottom: 10 },
+  badgeRow: { flexDirection: 'row', gap: 8 },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: '#F2F2F2',
-    borderRadius: 20,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 6,
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 5,
   },
-  badgeText: { fontSize: 11, color: '#888' },
-  badgeAI: { backgroundColor: '#EDF5F3' },
-  badgeAIText: { fontSize: 11, color: BRAND, fontWeight: '600' },
-  separator: { height: 2 },
+  badgeText: { fontSize: 11, color: '#666', fontWeight: '500' },
+  badgeAI: { backgroundColor: '#E8F5E9' },
+  badgeAIText: { fontSize: 11, color: '#2E7D32', fontWeight: '600' },
+  separator: { height: 0 },
   emptyWrap: { alignItems: 'center', paddingTop: 80, paddingHorizontal: 40 },
   emptyIcon: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#EDF5F3',
+    backgroundColor: '#F0F4F8',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -809,23 +830,25 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
-    paddingBottom: 22,
-    paddingTop: 12,
-    backgroundColor: 'rgba(245,246,248,0.95)',
+    paddingBottom: 20,
+    paddingTop: 16,
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 1,
+    borderTopColor: '#F0F0F0',
   },
   disclaimer: { fontSize: 11, color: '#BBB', marginBottom: 10 },
   takeNoteBtn: {
     backgroundColor: BRAND,
     borderRadius: 28,
-    paddingHorizontal: 32,
+    paddingHorizontal: 36,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.12,
     shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
   },
   takeNoteBtnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
 });

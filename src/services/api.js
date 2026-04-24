@@ -58,6 +58,7 @@ export const cardsApi = {
   update: (id, data) => api.put(`/cards/${id}`, data),
   delete: (id) => api.delete(`/cards/${id}`),
   getWalletPass: (id) => api.get(`/cards/wallet/create-pass/${id}`),
+  getAppleWalletPassUrl: (id) => `${API_BASE_URL}/cards/wallet/apple-pass/${id}`,
   getPublicCard: (tenantSlug, cardSlug) => api.get(`/public/card/${tenantSlug}/${cardSlug}`),
   getPublicWalletPass: (tenantSlug, cardSlug) => api.post(`/public/wallet/${tenantSlug}/${cardSlug}`),
 };
