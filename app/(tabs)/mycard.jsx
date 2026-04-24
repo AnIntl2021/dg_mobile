@@ -62,7 +62,7 @@ function SidebarDrawer({ visible, onClose, user, onLogout, avatarUrl }) {
 
       {/* Drawer panel */}
       <Animated.View style={[sd.panel, { transform: [{ translateX }] }]}>
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           {/* Profile section */}
           <View style={[sd.profileSection, { paddingTop: (insets.top || 0) + 20 }]}>
             {avatarUrl ? (
@@ -94,7 +94,7 @@ function SidebarDrawer({ visible, onClose, user, onLogout, avatarUrl }) {
           <TouchableOpacity style={[sd.signOutBtn, { marginBottom: (insets.bottom || 0) + 20 }]} onPress={onLogout}>
             <Text style={sd.signOutText}>Sign Out</Text>
           </TouchableOpacity>
-        </SafeAreaView>
+        </View>
       </Animated.View>
     </Modal>
   );
