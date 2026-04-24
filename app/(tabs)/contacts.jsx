@@ -145,14 +145,19 @@ export default function ContactsScreen() {
 
       {/* Search */}
       <View style={styles.searchWrap}>
-        <Ionicons name="search-outline" size={18} color="#AAAAAA" style={styles.searchIcon} />
+        <Ionicons name="search-outline" size={20} color="#999" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search"
-          placeholderTextColor="#AAAAAA"
+          placeholder="Search contacts..."
+          placeholderTextColor="#999"
           value={search}
           onChangeText={setSearch}
         />
+        {search.length > 0 && (
+          <TouchableOpacity onPress={() => setSearch('')} hitSlop={8}>
+            <Ionicons name="close-circle" size={18} color="#BBB" />
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* List */}
@@ -242,14 +247,21 @@ const styles = StyleSheet.create({
   searchWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F2F2F2',
-    borderRadius: 12,
+    backgroundColor: '#fff',
+    borderRadius: 25,
     marginHorizontal: 16,
-    marginBottom: 8,
-    paddingHorizontal: 12,
+    marginTop: 14,
+    marginBottom: 10,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 5,
+    elevation: 1,
   },
-  searchIcon: { marginRight: 8 },
-  searchInput: { flex: 1, paddingVertical: 11, fontSize: 15, color: '#1A1A1A' },
+  searchIcon: { marginRight: 10 },
+  searchInput: { flex: 1, paddingVertical: 12, fontSize: 16, color: '#1A1A1A' },
   list: { paddingBottom: 20 },
   contactRow: {
     flexDirection: 'row',
