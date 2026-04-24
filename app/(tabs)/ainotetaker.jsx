@@ -621,7 +621,7 @@ export default function AiNotetakerScreen() {
 
       {/* Search */}
       <View style={styles.searchWrap}>
-        <Ionicons name="search-outline" size={18} color="#999" style={{ marginRight: 8 }} />
+        <Ionicons name="search-outline" size={20} color="#999" style={{ marginRight: 10 }} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search notes..."
@@ -670,7 +670,7 @@ export default function AiNotetakerScreen() {
                   hitSlop={8}
                   style={styles.deleteBtn}
                 >
-                  <Ionicons name="trash-outline" size={16} color="#FF4444" />
+                  <Ionicons name="trash" size={18} color="#E34B4B" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -688,7 +688,7 @@ export default function AiNotetakerScreen() {
                 </View>
               ) : item.ai ? (
                 <View style={[styles.badge, styles.badgeAI]}>
-                  <Ionicons name="sparkles" size={12} color={BRAND} style={{ marginRight: 3 }} />
+                  <Ionicons name="sparkles" size={12} color={BRAND} style={{ marginRight: 5 }} />
                   <Text style={styles.badgeAIText}>AI Summary</Text>
                 </View>
               ) : null}
@@ -700,13 +700,16 @@ export default function AiNotetakerScreen() {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.disclaimer}>
-          Make sure everyone is okay with being recorded.
-        </Text>
-        <TouchableOpacity style={styles.takeNoteBtn} onPress={() => setRecording(true)} activeOpacity={0.85}>
-          <Ionicons name="mic" size={20} color="#fff" style={{ marginRight: 8 }} />
-          <Text style={styles.takeNoteBtnText}>Take note</Text>
-        </TouchableOpacity>
+        <View style={styles.footerContent}>
+          <TouchableOpacity style={styles.editBtn} activeOpacity={0.7}>
+            <Ionicons name="create-outline" size={24} color={BRAND} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.recordBtn} onPress={() => setRecording(true)} activeOpacity={0.85}>
+            <Ionicons name="mic" size={22} color="#fff" style={{ marginRight: 10 }} />
+            <Text style={styles.recordBtnText}>Record Note</Text>
+          </TouchableOpacity>
+          <View style={{ width: 48 }} /> 
+        </View>
       </View>
 
       {/* Recording modal */}
@@ -742,15 +745,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 25,
     marginHorizontal: 16,
     marginTop: 14,
     marginBottom: 10,
-    paddingHorizontal: 14,
+    paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#E8E8E8',
+    borderColor: '#F0F0F0',
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 5,
+    elevation: 1,
   },
-  searchInput: { flex: 1, paddingVertical: 11, fontSize: 15, color: '#1A1A1A' },
+  searchInput: { flex: 1, paddingVertical: 12, fontSize: 16, color: '#1A1A1A' },
   list: { paddingBottom: 150 },
   noteItem: {
     paddingHorizontal: 20,
@@ -760,10 +767,10 @@ const styles = StyleSheet.create({
     marginTop: 6,
     borderRadius: 14,
     shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 1,
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
   noteHeader: {
     flexDirection: 'row',
@@ -771,25 +778,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
-  noteHeaderRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  noteDuration: { fontSize: 11, color: '#BBB' },
-  deleteBtn: { padding: 2 },
-  noteTime: { fontSize: 12, color: '#999' },
-  noteTitle: { fontSize: 16, fontWeight: '700', color: '#1A1A1A', marginBottom: 4, lineHeight: 22 },
-  notePreview: { fontSize: 13, color: '#777', lineHeight: 19, marginBottom: 8 },
-  badgeRow: { flexDirection: 'row' },
+  noteHeaderRight: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  noteDuration: { fontSize: 12, color: '#999', fontWeight: '500' },
+  deleteBtn: { padding: 4 },
+  noteTime: { fontSize: 13, color: '#999', fontWeight: '500' },
+  noteTitle: { fontSize: 18, fontWeight: '700', color: '#1A1A1A', marginBottom: 6, lineHeight: 24 },
+  notePreview: { fontSize: 14, color: '#666', lineHeight: 20, marginBottom: 12 },
+  badgeRow: { flexDirection: 'row', marginTop: 2 },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: '#F2F2F2',
+    backgroundColor: '#F5F5F5',
     borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
   },
   badgeText: { fontSize: 11, color: '#888' },
-  badgeAI: { backgroundColor: '#EDF5F3' },
-  badgeAIText: { fontSize: 11, color: BRAND, fontWeight: '600' },
+  badgeAI: { backgroundColor: '#E8F4F1' },
+  badgeAIText: { fontSize: 12, color: BRAND, fontWeight: '700' },
   separator: { height: 2 },
   emptyWrap: { alignItems: 'center', paddingTop: 80, paddingHorizontal: 40 },
   emptyIcon: {
@@ -808,26 +815,45 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center',
-    paddingBottom: 22,
-    paddingTop: 12,
-    backgroundColor: 'rgba(245,246,248,0.95)',
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    paddingBottom: 25,
+    paddingTop: 15,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
   },
-  disclaimer: { fontSize: 11, color: '#BBB', marginBottom: 10 },
-  takeNoteBtn: {
-    backgroundColor: BRAND,
-    borderRadius: 28,
-    paddingHorizontal: 32,
-    paddingVertical: 14,
+  footerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    gap: 15,
   },
-  takeNoteBtnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  editBtn: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    backgroundColor: '#F0F7F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: BRAND,
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  recordBtn: {
+    backgroundColor: BRAND,
+    borderRadius: 30,
+    paddingHorizontal: 35,
+    paddingVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: BRAND,
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 6,
+  },
+  recordBtnText: { color: '#fff', fontWeight: '700', fontSize: 17 },
 });
 
 /* ═══════════════════════════ Note Detail Styles ═══════════════════════════ */

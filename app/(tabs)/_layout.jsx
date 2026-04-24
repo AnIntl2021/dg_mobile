@@ -28,7 +28,7 @@ export default function TabsLayout() {
         options={{
           title: 'My Card',
           tabBarIcon: ({ color, size, focused }) => (
-            <TabIcon name="card" color={color} size={size} focused={focused} />
+            <TabIcon name={focused ? "card" : "card-outline"} color={color} size={size} focused={focused} />
           ),
         }}
       />
@@ -37,16 +37,16 @@ export default function TabsLayout() {
         options={{
           title: 'Scan',
           tabBarIcon: ({ color, size, focused }) => (
-            <TabIcon name="scan-outline" color={color} size={size} focused={focused} />
+            <TabIcon name={focused ? "qr-code" : "qr-code-outline"} color={color} size={size} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="ainotetaker"
         options={{
-          title: 'AI Notetaker',
+          title: 'AI Note',
           tabBarIcon: ({ color, size, focused }) => (
-            <TabIcon name="layers-outline" color={color} size={size} focused={focused} />
+            <TabIcon name={focused ? "mic" : "mic-outline"} color={color} size={size} focused={focused} />
           ),
         }}
       />
@@ -55,7 +55,7 @@ export default function TabsLayout() {
         options={{
           title: 'Contacts',
           tabBarIcon: ({ color, size, focused }) => (
-            <TabIcon name="people-outline" color={color} size={size} focused={focused} />
+            <TabIcon name={focused ? "people" : "people-outline"} color={color} size={size} focused={focused} />
           ),
         }}
       />

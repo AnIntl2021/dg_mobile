@@ -62,7 +62,7 @@ export default function LoginScreen() {
             style={styles.logoImg}
             resizeMode="contain"
           />
-          <Text style={styles.appName}>Ansoftt DG</Text>
+          <Text style={styles.appName}>ANSOFTT DC</Text>
           <Text style={styles.tagline}>Your digital business card</Text>
         </View>
 
