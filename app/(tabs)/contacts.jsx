@@ -14,6 +14,8 @@ import {
   Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
 import { leadsApi, cardsApi } from '@/services/api';
@@ -50,6 +52,7 @@ function formatRelative(dateStr) {
 }
 
 export default function ContactsScreen() {
+  const insets = useSafeAreaInsets();
   const { user, logout } = useAuth();
   const router = useRouter();
   const [contacts, setContacts] = useState([]);
@@ -119,9 +122,11 @@ export default function ContactsScreen() {
   });
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={styles.safe}>
+      <StatusBar barStyle="light-content" backgroundColor={CORAL} translucent={false} />
+
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: (insets.top || 0) + 6 }]}>
         <View style={styles.headerLeft}>
           <Text style={styles.headerTitle}>Contacts</Text>
           {cardName ? (
@@ -130,10 +135,10 @@ export default function ContactsScreen() {
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.iconBtn} onPress={handleLogout}>
-            <Ionicons name="log-out-outline" size={22} color="#333" />
+            <Ionicons name="log-out-outline" size={22} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconBtn}>
-            <Ionicons name="add" size={24} color="#333" />
+            <Ionicons name="add" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -215,7 +220,7 @@ export default function ContactsScreen() {
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -226,11 +231,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingBottom: 12,
+    backgroundColor: CORAL,
   },
   headerLeft: { flex: 1 },
-  headerTitle: { fontSize: 18, fontWeight: '700', color: '#1A1A1A' },
-  headerSub: { fontSize: 12, color: '#888', marginTop: 1 },
+  headerTitle: { fontSize: 18, fontWeight: '700', color: '#fff' },
+  headerSub: { fontSize: 12, color: 'rgba(255,255,255,0.7)', marginTop: 1 },
   headerRight: { flexDirection: 'row', gap: 4 },
   iconBtn: { padding: 4 },
   searchWrap: {

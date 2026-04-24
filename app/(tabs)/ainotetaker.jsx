@@ -15,6 +15,7 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
@@ -535,6 +536,7 @@ function RecordingModal({ onSave, onClose }) {
 
 /* ═══════════════════════════════ Main Screen ═══════════════════════════════ */
 export default function AiNotetakerScreen() {
+  const insets = useSafeAreaInsets();
   const { logout, user } = useAuth();
   const router = useRouter();
   // Per-user storage key so each person\'s notes are isolated
@@ -605,11 +607,11 @@ export default function AiNotetakerScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="light-content" backgroundColor={BRAND} />
+    <View style={styles.safe}>
+      <StatusBar barStyle="light-content" backgroundColor={BRAND} translucent={false} />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: (insets.top || 0) + 6 }]}>
         <View style={styles.headerLeft}>
           <Ionicons name="mic" size={20} color="#fff" style={{ marginRight: 8 }} />
           <Text style={styles.headerTitle}>AI Notetaker</Text>
@@ -724,7 +726,7 @@ export default function AiNotetakerScreen() {
       {selectedNote && (
         <NoteDetailModal note={selectedNote} onClose={() => setSelectedNote(null)} />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 

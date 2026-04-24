@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
 import { cardsApi, API_BASE_URL, FRONTEND_BASE_URL } from '@/services/api';
@@ -65,6 +67,7 @@ function buildShareMessage(card, publicUrl) {
 
 /* ─── Scanned card detail modal ─── */
 function ScannedCardModal({ card, tenantSlug, cardSlug, publicUrl, onClose }) {
+  const insets = useSafeAreaInsets();
   if (!card) return null;
 
   const design = parseDesign(card);
@@ -116,8 +119,8 @@ function ScannedCardModal({ card, tenantSlug, cardSlug, publicUrl, onClose }) {
 
   return (
     <Modal visible animationType="slide" statusBarTranslucent onRequestClose={onClose}>
-      <SafeAreaView style={cm.safe}>
-        <View style={[cm.header, { backgroundColor: accentColor }]}>
+      <View style={cm.safe}>
+        <View style={[cm.header, { backgroundColor: accentColor, paddingTop: (insets.top || 0) + 10 }]}>
           <TouchableOpacity onPress={onClose} hitSlop={12}>
             <Ionicons name="close" size={26} color="#fff" />
           </TouchableOpacity>
@@ -254,12 +257,13 @@ function ScannedCardModal({ card, tenantSlug, cardSlug, publicUrl, onClose }) {
             ) : null}
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </View>
     </Modal>
   );
 }
 
 export default function ScanScreen() {
+  const insets = useSafeAreaInsets();
   const { logout } = useAuth();
   const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
@@ -361,7 +365,7 @@ export default function ScanScreen() {
       ) : null}
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: (insets.top || 0) + 10 }]}>
         <Text style={styles.headerTitle}>Scan</Text>
         <View style={styles.headerRight}>
           <TouchableOpacity onPress={() => setTorch((v) => !v)} style={styles.torchBtn}>
@@ -409,7 +413,7 @@ export default function ScanScreen() {
           </TouchableOpacity>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -424,7 +428,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingBottom: 14,
     backgroundColor: '#000',
   },
   headerTitle: { fontSize: 18, fontWeight: '700', color: '#fff' },

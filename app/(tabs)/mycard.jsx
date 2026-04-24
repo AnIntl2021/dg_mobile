@@ -36,6 +36,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 /* ─── Sidebar Drawer ─── */
 function SidebarDrawer({ visible, onClose, user, onLogout, avatarUrl }) {
+  const insets = useSafeAreaInsets();
   const translateX = useState(new Animated.Value(-SCREEN_WIDTH * 0.75))[0];
 
   useEffect(() => {
@@ -63,7 +64,7 @@ function SidebarDrawer({ visible, onClose, user, onLogout, avatarUrl }) {
       <Animated.View style={[sd.panel, { transform: [{ translateX }] }]}>
         <SafeAreaView style={{ flex: 1 }}>
           {/* Profile section */}
-          <View style={sd.profileSection}>
+          <View style={[sd.profileSection, { paddingTop: (insets.top || 0) + 20 }]}>
             {avatarUrl ? (
               <Image source={{ uri: avatarUrl }} style={sd.avatar} />
             ) : (
@@ -90,7 +91,7 @@ function SidebarDrawer({ visible, onClose, user, onLogout, avatarUrl }) {
 
           {/* Sign out at bottom */}
           <View style={{ flex: 1 }} />
-          <TouchableOpacity style={sd.signOutBtn} onPress={onLogout}>
+          <TouchableOpacity style={[sd.signOutBtn, { marginBottom: (insets.bottom || 0) + 20 }]} onPress={onLogout}>
             <Text style={sd.signOutText}>Sign Out</Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -1378,7 +1379,6 @@ const sd = StyleSheet.create({
   profileSection: {
     backgroundColor: BRAND,
     paddingHorizontal: 24,
-    paddingTop: 32,
     paddingBottom: 28,
     alignItems: 'flex-start',
   },
