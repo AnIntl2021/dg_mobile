@@ -330,7 +330,7 @@ export default function ScanScreen() {
 
   if (!permission.granted) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.permissionBox}>
           <Ionicons name="camera-outline" size={56} color={BRAND} />
           <Text style={styles.permTitle}>Camera Access Needed</Text>
@@ -339,12 +339,12 @@ export default function ScanScreen() {
             <Text style={styles.permBtnText}>Allow Camera</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* In-app card detail modal */}
       {scannedCard ? (
         <ScannedCardModal
