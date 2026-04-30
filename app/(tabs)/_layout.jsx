@@ -41,11 +41,11 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="scan"
+        name="calendar"
         options={{
-          title: 'Scan',
+          title: 'Calendar',
           tabBarIcon: ({ color, size, focused }) => (
-            <TabIcon name={focused ? "qr-code" : "qr-code-outline"} color={color} size={size} focused={focused} />
+            <TabIcon name={focused ? "calendar" : "calendar-outline"} color={color} size={size} focused={focused} />
           ),
         }}
       />

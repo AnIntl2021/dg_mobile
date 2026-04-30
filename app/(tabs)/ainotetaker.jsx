@@ -545,6 +545,8 @@ export default function AiNotetakerScreen() {
   const [search, setSearch] = useState('');
   const [recording, setRecording] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
+  const [textNote, setTextNote] = useState(false);
+  const [textInput, setTextInput] = useState('');
 
   const handleLogout = () => {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
@@ -590,6 +592,29 @@ export default function AiNotetakerScreen() {
     },
     [notes, saveNotes]
   );
+
+  const handleSaveTextNote = async () => {
+    if (!textInput.trim()) {
+      Alert.alert('Empty Note', 'Please enter some text for your note.');
+      return;
+    }
+
+    const ai = generateSummary(textInput);
+    const note = {
+      id: Date.now().toString(),
+      title: ai?.title || textInput.slice(0, 50),
+      status: 'done',
+      createdAt: new Date().toISOString(),
+      transcript: textInput,
+      ai,
+      duration: null,
+    };
+
+    const updated = [note, ...notes];
+    await saveNotes(updated);
+    setTextNote(false);
+    setTextInput('');
+  };
 
   const handleDeleteNote = (id) => {
     Alert.alert('Delete Note', 'Delete this note permanently?', [
@@ -703,7 +728,7 @@ export default function AiNotetakerScreen() {
       {/* Footer */}
       <View style={styles.footer}>
         <View style={styles.footerContent}>
-          <TouchableOpacity style={styles.editBtn} activeOpacity={0.7}>
+          <TouchableOpacity style={styles.editBtn} onPress={() => setTextNote(true)} activeOpacity={0.7}>
             <Ionicons name="create-outline" size={24} color={BRAND} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.recordBtn} onPress={() => setRecording(true)} activeOpacity={0.85}>
@@ -721,6 +746,49 @@ export default function AiNotetakerScreen() {
           onClose={() => setRecording(false)}
         />
       )}
+
+      {/* Text Note Modal */}
+      <Modal animationType="slide" presentationStyle="pageSheet" visible={textNote} onRequestClose={() => setTextNote(false)}>
+        <SafeAreaView style={det.safe}>
+          <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+          
+          {/* Header */}
+          <View style={det.header}>
+            <TouchableOpacity onPress={() => setTextNote(false)} hitSlop={12}>
+              <Ionicons name="chevron-back" size={26} color={BRAND} />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 18, fontWeight: '700', color: BRAND, flex: 1, marginLeft: 12 }}>
+              Write Note
+            </Text>
+            <TouchableOpacity
+              onPress={handleSaveTextNote}
+              hitSlop={12}
+              style={{ paddingHorizontal: 12, paddingVertical: 8 }}
+            >
+              <Ionicons name="checkmark-circle" size={26} color={BRAND} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Text input */}
+          <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 16 }}>
+            <TextInput
+              style={{
+                flex: 1,
+                fontSize: 16,
+                color: '#1A1A1A',
+                lineHeight: 24,
+                textAlignVertical: 'top',
+              }}
+              placeholder="Write your note here..."
+              placeholderTextColor="#CCC"
+              multiline
+              value={textInput}
+              onChangeText={setTextInput}
+              autoFocus
+            />
+          </View>
+        </SafeAreaView>
+      </Modal>
 
       {/* Note detail modal */}
       {selectedNote && (

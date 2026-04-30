@@ -57,12 +57,14 @@ export default function LoginScreen() {
       >
         {/* Logo */}
         <View style={styles.logoWrap}>
-          <Image
-            source={require('../../assets/ansoftt_logo.png')}
-            style={styles.logoImg}
-            resizeMode="contain"
-          />
-          <Text style={styles.appName}>ANSOFTT DC</Text>
+          <View style={styles.logoBox}>
+            <Image
+              source={require('../../assets/logo.png')}
+              style={styles.logoImg}
+              resizeMode="contain"
+            />
+          </View>
+          <Text style={styles.appName}>ANSOFFT DC</Text>
           <Text style={styles.tagline}>Your digital business card</Text>
         </View>
 
@@ -125,10 +127,19 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#FFFFFF' },
   container: { flex: 1, justifyContent: 'center', paddingHorizontal: 28 },
   logoWrap: { alignItems: 'center', marginBottom: 44 },
-  logoImg: {
-    width: 80,
-    height: 80,
+  logoBox: {
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 14,
+    overflow: 'hidden',
+  },
+  logoImg: {
+    width: '100%',
+    height: '100%',
   },
   appName: { fontSize: 26, fontWeight: '700', color: '#1A1A1A' },
   tagline: { fontSize: 14, color: '#999', marginTop: 4 },
